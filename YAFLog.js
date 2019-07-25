@@ -40,14 +40,21 @@ async function log(level, message, extra, color) {
 }
 
 module.exports = class YAFLog {
+    /**
+     * Create YAFLog instance.
+     * @param {YAFLogOptions instance} yaflogOptions 
+     */
     constructor(yaflogOptions) {
         this.options = yaflogOptions.console;
-        const flogOptions = yaflogOptions.flog;
-        if (flogOptions.enabled) {
-            this.flog = new FLog(flogOptions);
+        this.flogOptions = yaflogOptions.flog;
+        if (this.flogOptions.enabled) {
+            this.flog = new FLog(this.flogOptions);
         }
     }
 
+    /**
+     * Loads logger
+     */
     load() {
         if (this.loaded) {
             return this;
@@ -59,27 +66,53 @@ module.exports = class YAFLog {
         return this;
     }
 
+    /**
+     * Log with 'info' level
+     * @param {Text message} message 
+     * @param {Object with extra data} extra 
+     */
     async info(message, extra) {
         await log.call(this, 'info', message, extra, this.options.colors.info);
     }
-    
+
+    /**
+     * Log with 'warn' level
+     * @param {Text message} message 
+     * @param {Object with extra data} extra 
+     */
     async warn(message, extra) {
         await log.call(this, 'warn', message, extra, this.options.colors.warn);
     }
-    
+
+    /**
+     * Log with 'error' level
+     * @param {Text message} message 
+     * @param {Object with extra data} extra 
+     */
     async error(message, extra) {
         await log.call(this, 'error', message, extra, this.options.colors.error);
     }
-    
+
+    /**
+     * Log with 'debug' level
+     * @param {Text message} message 
+     * @param {Object with extra data} extra 
+     */
     async debug(message, extra) {
         if (this.options.debugOutput) {
             await log.call(this, 'debug', message, extra, this.options.colors.debug);
         }
     }
     
+    /**
+     * If debugOutput is enabled, calls the passed function, waits for the end of execution and outputs the result to the logger
+     * @param {Function (maybe async) that must return an object with signature { message?, extra? }} fn
+     */
     async lazyDebug(fn) {
         if (this.options.debugOutput) {
-            const { message, extra } = await fn();
+            const result = await fn();
+            const message = result.message;
+            const extra = result.extra;
             await log.call(this, 'debug', message, extra, this.options.colors.debug);
         }
     }

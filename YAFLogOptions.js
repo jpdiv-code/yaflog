@@ -1,40 +1,11 @@
 'use strict';
 
-function merge(dist, src) {
-    for (let key in src) {
-        const distValue = dist[key];
-        const srcValue = src[key];
-        if (distValue) {
-            if (typeof distValue === 'object') {
-                if (Array.isArray(distValue)) {
-                    if (Array.isArray(srcValue)) {
-                        for (let value of srcValue) {
-                            distValue.push(value);
-                        }
-                    } else {
-                        dist[key] = srcValue;
-                    }
-                } else {
-                    if (typeof srcValue === 'object') {
-                        if (Array.isArray(srcValue)) {
-                            dist[key] = srcValue;
-                        } else {
-                            merge(distValue, srcValue);
-                        }
-                    } else {
-                        dist[key] = srcValue;
-                    }
-                }
-            } else {
-                dist[key] = srcValue;
-            }
-        } else {
-            dist[key] = srcValue;
-        }
-    }
-}
+const helper = new (require('jhelp'))();
 
 module.exports = class YAFLogOptions {
+    /**
+     * Create YAFLogOptions instance.
+     */
     constructor() {
         this.console = {
             enabled: true,
@@ -59,13 +30,21 @@ module.exports = class YAFLogOptions {
         };
     }
     
+    /**
+     * Sets console logger options
+     * @param {Console logger options} consoleOptions 
+     */
     setConsoleOptions(consoleOptions) {
-        merge(this.console, consoleOptions);
+        helper.merge(this.console, consoleOptions);
         return this;
     }
-    
+
+    /**
+     * Sets file-logger options
+     * @param {File-logger options} flogOptions 
+     */
     setFLogOptions(flogOptions) {
-        merge(this.flog, flogOptions);
+        helper.merge(this.flog, flogOptions);
         return this;
     }
 };
