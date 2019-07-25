@@ -1,0 +1,32 @@
+{
+  "name": "yaflog",
+  "version": "1.0.0",
+  "description": "YAML File Logger",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jpdiv-code/yaflog.git"
+  },
+  "keywords": [
+    "yaml",
+    "file",
+    "logger",
+    "log",
+    "pretty"
+  ],
+  "author": "jpdiv.code",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jpdiv-code/yaflog/issues"
+  },
+  "homepage": "https://github.com/jpdiv-code/yaflog#readme",
+  "dependencies": {
+    "yaml": "^1.6.0"
+  },
+  "devDependencies": {
+    "mocha": "^6.2.0"
+  }
+}
