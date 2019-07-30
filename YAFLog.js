@@ -28,7 +28,7 @@ async function log(level, message, extra, color) {
             text = JSON.stringify(obj);
         }
         if (this.options.colorize) {
-            console[level](color || '' + text + '\x1b[0m'); // reset color
+            console[level](color + text + '\x1b[0m'); // reset color
         } else {
             console[level](text);
         }
