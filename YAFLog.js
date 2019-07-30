@@ -28,7 +28,7 @@ async function log(level, message, extra, color) {
             text = JSON.stringify(obj);
         }
         if (this.options.colorize) {
-            console[level](color + text + '\x1b[0m'); // reset color
+            console[level](color || '' + text + '\x1b[0m'); // reset color
         } else {
             console[level](text);
         }
@@ -72,7 +72,7 @@ module.exports = class YAFLog {
      * @param {Object with extra data} extra 
      */
     async info(message, extra) {
-        await log.call(this, 'info', message, extra, this.options.colors.info);
+        await log.call(this, 'info', message, extra, '\x1b[32m');
     }
 
     /**
@@ -81,7 +81,7 @@ module.exports = class YAFLog {
      * @param {Object with extra data} extra 
      */
     async warn(message, extra) {
-        await log.call(this, 'warn', message, extra, this.options.colors.warn);
+        await log.call(this, 'warn', message, extra, '\x1b[33m');
     }
 
     /**
@@ -90,7 +90,7 @@ module.exports = class YAFLog {
      * @param {Object with extra data} extra 
      */
     async error(message, extra) {
-        await log.call(this, 'error', message, extra, this.options.colors.error);
+        await log.call(this, 'error', message, extra, '\x1b[31m');
     }
 
     /**
@@ -100,7 +100,7 @@ module.exports = class YAFLog {
      */
     async debug(message, extra) {
         if (this.options.debugOutput) {
-            await log.call(this, 'debug', message, extra, this.options.colors.debug);
+            await log.call(this, 'debug', message, extra, '\x1b[36m');
         }
     }
     
@@ -113,7 +113,7 @@ module.exports = class YAFLog {
             const result = await fn();
             const message = result.message;
             const extra = result.extra;
-            await log.call(this, 'debug', message, extra, this.options.colors.debug);
+            await log.call(this, 'debug', message, extra, '\x1b[36m');
         }
     }
 };
